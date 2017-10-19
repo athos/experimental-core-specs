@@ -70,6 +70,82 @@
 (s/fdef even? :args (s/cat :n integer?) :ret boolean?)
 (s/fdef odd? :args (s/cat :n integer?) :ret boolean?)
 
+(s/fdef + :args (s/* number?) :ret number?)
+(s/fdef - :args (s/+ number?) :ret number?)
+(s/fdef * :args (s/* number?) :ret number?)
+(s/fdef / :args (s/+ number?) :ret number?)
+(s/fdef < :args (s/+ number?) :ret boolean?)
+(s/fdef > :args (s/+ number?) :ret boolean?)
+(s/fdef <= :args (s/+ number?) :ret boolean?)
+(s/fdef >= :args (s/+ number?) :ret boolean?)
+(s/fdef == :args (s/+ number?) :ret boolean?)
+
+(s/fdef num :args (s/cat :x number?) :ret number?)
+(s/fdef byte :args (s/cat :x number?) :ret int?)
+(s/fdef short :args (s/cat :x number?) :ret int?)
+(s/fdef int :args (s/cat :x number?) :ret int?)
+(s/fdef long :args (s/cat :x number?) :ret int?)
+(s/fdef bigint :args (s/cat :x number?) :ret integer?)
+(s/fdef biginteger :args (s/cat :x number?) :ret integer?)
+(s/fdef float :args (s/cat :x number?) :ret float?)
+(s/fdef double :args (s/cat :x number?) :ret double?)
+(s/fdef bigdec :args (s/cat :x number?) :ret bigdec?)
+
+(s/fdef inc :args (s/cat :x number?) :ret number?)
+(s/fdef dec :args (s/cat :x number?) :ret number?)
+(s/fdef quot :args (s/cat :num number? :div number?) :ret number?)
+(s/fdef mod :args (s/cat :num number? :div number?) :ret number?)
+(s/fdef rem :args (s/cat :num number? :div number?) :ret number?)
+(s/fdef max :args (s/+ number?) :ret number?)
+(s/fdef min :args (s/+ number?) :ret number?)
+
+(s/fdef +' :args (s/* number?) :ret number?)
+(s/fdef -' :args (s/+ number?) :ret number?)
+(s/fdef *' :args (s/* number?) :ret number?)
+(s/fdef inc' :args (s/cat :x number?) :ret number?)
+(s/fdef dec' :args (s/cat :x number?) :ret number?)
+
+(s/fdef unchecked-char :args (s/cat :x number?) :ret char?)
+(s/fdef unchecked-byte :args (s/cat :x number?) :ret int?)
+(s/fdef unchecked-short :args (s/cat :x number?) :ret int?)
+(s/fdef unchecked-int :args (s/cat :x number?) :ret int?)
+(s/fdef unchecked-long :args (s/cat :x number?) :ret int?)
+(s/fdef unchecked-float :args (s/cat :x number?) :ret float?)
+(s/fdef unchecked-double :args (s/cat :x number?) :ret double?)
+(s/fdef unchecked-add :args (s/cat :x number? :y number?) :ret number?)
+(s/fdef unchecked-subtract :args (s/cat :x number? :y number?) :ret number?)
+(s/fdef unchecked-multiply :args (s/cat :x number? :y number?) :ret number?)
+(s/fdef unchecked-negate :args (s/cat :x number?) :ret number?)
+(s/fdef unchecked-inc :args (s/cat :x number?) :ret number?)
+(s/fdef unchecked-dec :args (s/cat :x number?) :ret number?)
+(s/fdef unchecked-add-int :args (s/cat :x number? :y number?) :ret int?)
+(s/fdef unchecked-subtract-int :args (s/cat :x number? :y number?) :ret int?)
+(s/fdef unchecked-multiply-int :args (s/cat :x number? :y number?) :ret int?)
+(s/fdef unchecked-divide-int :args (s/cat :x number? :y number?) :ret int?)
+(s/fdef unchecked-remainder-int :args (s/cat :x number? :y number?) :ret int?)
+(s/fdef unchecked-negate-int :args (s/cat :x number?) :ret int?)
+(s/fdef unchecked-inc-int :args (s/cat :x number?) :ret int?)
+(s/fdef unchecked-dec-int :args (s/cat :x number?) :ret int?)
+
+(s/fdef bit-not :args (s/cat :x int?) :ret int?)
+(s/fdef bit-and :args (s/cat :x int? :y int? :more (s/* int?)) :ret int?)
+(s/fdef bit-or :args (s/cat :x int? :y int? :more (s/* int?)) :ret int?)
+(s/fdef bit-xor :args (s/cat :x int? :y int? :more (s/* int?) :ret int?))
+(s/fdef bit-and-not :args (s/cat :x int? :y int? :more (s/* int?)) :ret int?)
+(s/fdef bit-shift-left :args (s/cat :x int? :n int?) :ret int?)
+(s/fdef bit-shift-right :args (s/cat :x int? :n int?) :ret int?)
+(s/fdef unsigned-bit-shift-right :args (s/cat :x int? :n int?) :ret int?)
+(s/fdef bit-test :args (s/cat :x int? :n int?) :ret boolean?)
+(s/fdef bit-clear :args (s/cat :x int? :n int?) :ret int?)
+(s/fdef bit-set :args (s/cat :x int? :n int?) :ret int?)
+(s/fdef bit-flip :args (s/cat :x int? :n int?) :ret int?)
+
+(s/fdef rationalize :args (s/cat :num number?) :ret rational?)
+(s/fdef numerator :args (s/cat :r ratio?) :ret integer?)
+(s/fdef denominator :args (s/cat :r ratio?) :ret integer?)
+(s/fdef rand :args (s/? number?) :ret number?)
+(s/fdef rand-int :args (s/cat :n int?) :ret int?)
+
 (s/fdef empty? :args (s/cat :coll coll?) :ret boolean?)
 (s/fdef sequential? :args (s/cat :coll coll?) :ret boolean?)
 (s/fdef associative? :args (s/cat :coll coll?) :ret boolean?)
@@ -81,73 +157,6 @@
 (s/fdef chunked-seq? :args (s/cat :s seq?) :ret boolean?)
 
 (comment
-
-  unchecked-long
-  unchecked-negate
-  unchecked-inc-int
-  bit-xor
-  unsigned-bit-shift-right
-  unchecked-float
-  num
-  inc'
-  <=
-  -'
-  biginteger
-  *
-  min
-  long
-  double
-  bit-and-not
-  unchecked-add-int
-  short
-  quot
-  unchecked-double
-  unchecked-multiply-int
-  int
-  rand
-  >
-  unchecked-int
-  unchecked-multiply
-  unchecked-dec
-  bigint
-  float
-  mod
-  -
-  bit-test
-  unchecked-dec-int
-  bit-and
-  *'
-  unchecked-divide-int
-  >=
-  /
-  bit-or
-  bit-flip
-  numerator
-  unchecked-byte
-  rationalize
-  unchecked-short
-  inc
-  +
-  bigdec
-  max
-  ==
-  unchecked-inc
-  bit-clear
-  bit-not
-  byte
-  unchecked-negate-int
-  unchecked-char
-  +'
-  unchecked-remainder-int
-  bit-set
-  unchecked-subtract-int
-  dec'
-  bit-shift-right
-  bit-shift-left
-  rand-int
-  dec
-  <
-  denominator
 
 bound?
 restart-agent
@@ -418,7 +427,6 @@ persistent!
 nnext
 add-watch
 not-every?
-rem
 agent-error
 some
 future-cancelled?
@@ -448,7 +456,6 @@ re-find
 run!
 val
 defonce
-unchecked-add
 loaded-libs
 ->Vec
 not
@@ -466,7 +473,6 @@ set-validator!
 defprotocol
 swap!
 vals
-unchecked-subtract
 sorted-set-by
 sync
 assert
