@@ -1,160 +1,161 @@
 (ns experimental-core-specs.core
-  (:require [clojure.spec.alpha :as s]))
+  (:require [clojure.core :as c]
+            [clojure.spec.alpha :as s]))
 
 (defmacro define-simple-predicate-specs [& preds]
   `(do ~@(for [pred preds]
            `(s/fdef ~pred :args (s/cat :x any?) :ret boolean?))))
 
 (define-simple-predicate-specs
-  any?
-  nil?
-  false?
-  true?
-  boolean?
-  symbol?
-  simple-symbol?
-  qualified-symbol?
-  special-symbol?
-  keyword?
-  simple-keyword?
-  qualified-keyword?
-  ident?
-  simple-ident?
-  qualified-ident?
-  number?
-  rational?
-  integer?
-  int?
-  nat-int?
-  pos-int?
-  neg-int?
-  decimal?
-  double?
-  float?
-  bigdec?
-  ratio?
-  char?
-  string?
-  coll?
-  seq?
-  seqable?
-  list?
-  set?
-  vector?
-  map?
-  map-entry?
-  ifn?
-  fn?
-  var?
-  class?
-  record?
-  bytes?
-  inst?
-  uuid?
-  uri?
-  volatile?
-  future?
-  delay?
-  reduced?
-  tagged-literal?
-  reader-conditional?
+  c/any?
+  c/nil?
+  c/false?
+  c/true?
+  c/boolean?
+  c/symbol?
+  c/simple-symbol?
+  c/qualified-symbol?
+  c/special-symbol?
+  c/keyword?
+  c/simple-keyword?
+  c/qualified-keyword?
+  c/ident?
+  c/simple-ident?
+  c/qualified-ident?
+  c/number?
+  c/rational?
+  c/integer?
+  c/int?
+  c/nat-int?
+  c/pos-int?
+  c/neg-int?
+  c/decimal?
+  c/double?
+  c/float?
+  c/bigdec?
+  c/ratio?
+  c/char?
+  c/string?
+  c/coll?
+  c/seq?
+  c/seqable?
+  c/list?
+  c/set?
+  c/vector?
+  c/map?
+  c/map-entry?
+  c/ifn?
+  c/fn?
+  c/var?
+  c/class?
+  c/record?
+  c/bytes?
+  c/inst?
+  c/uuid?
+  c/uri?
+  c/volatile?
+  c/future?
+  c/delay?
+  c/reduced?
+  c/tagged-literal?
+  c/reader-conditional?
   )
 
-(s/fdef = :args (s/+ any?) :ret boolean?)
-(s/fdef not= :args (s/+ any?) :ret boolean?)
-(s/fdef identical? (s/cat :x any? :y any?) boolean?)
+(s/fdef c/= :args (s/+ any?) :ret boolean?)
+(s/fdef c/not= :args (s/+ any?) :ret boolean?)
+(s/fdef c/identical? (s/cat :x any? :y any?) boolean?)
 
-(s/fdef zero? :args (s/cat :num number?) :ret boolean?)
-(s/fdef pos? :args (s/cat :num number?) :ret boolean?)
-(s/fdef neg? :args (s/cat :num number?) :ret boolean?)
-(s/fdef even? :args (s/cat :n integer?) :ret boolean?)
-(s/fdef odd? :args (s/cat :n integer?) :ret boolean?)
+(s/fdef c/zero? :args (s/cat :num number?) :ret boolean?)
+(s/fdef c/pos? :args (s/cat :num number?) :ret boolean?)
+(s/fdef c/neg? :args (s/cat :num number?) :ret boolean?)
+(s/fdef c/even? :args (s/cat :n integer?) :ret boolean?)
+(s/fdef c/odd? :args (s/cat :n integer?) :ret boolean?)
 
-(s/fdef + :args (s/* number?) :ret number?)
-(s/fdef - :args (s/+ number?) :ret number?)
-(s/fdef * :args (s/* number?) :ret number?)
-(s/fdef / :args (s/+ number?) :ret number?)
-(s/fdef < :args (s/+ number?) :ret boolean?)
-(s/fdef > :args (s/+ number?) :ret boolean?)
-(s/fdef <= :args (s/+ number?) :ret boolean?)
-(s/fdef >= :args (s/+ number?) :ret boolean?)
-(s/fdef == :args (s/+ number?) :ret boolean?)
+(s/fdef c/+ :args (s/* number?) :ret number?)
+(s/fdef c/- :args (s/+ number?) :ret number?)
+(s/fdef c/* :args (s/* number?) :ret number?)
+(s/fdef c// :args (s/+ number?) :ret number?)
+(s/fdef c/< :args (s/+ number?) :ret boolean?)
+(s/fdef c/> :args (s/+ number?) :ret boolean?)
+(s/fdef c/<= :args (s/+ number?) :ret boolean?)
+(s/fdef c/>= :args (s/+ number?) :ret boolean?)
+(s/fdef c/== :args (s/+ number?) :ret boolean?)
 
-(s/fdef num :args (s/cat :x number?) :ret number?)
-(s/fdef byte :args (s/cat :x number?) :ret int?)
-(s/fdef short :args (s/cat :x number?) :ret int?)
-(s/fdef int :args (s/cat :x number?) :ret int?)
-(s/fdef long :args (s/cat :x number?) :ret int?)
-(s/fdef bigint :args (s/cat :x number?) :ret integer?)
-(s/fdef biginteger :args (s/cat :x number?) :ret integer?)
-(s/fdef float :args (s/cat :x number?) :ret float?)
-(s/fdef double :args (s/cat :x number?) :ret double?)
-(s/fdef bigdec :args (s/cat :x number?) :ret bigdec?)
+(s/fdef c/num :args (s/cat :x number?) :ret number?)
+(s/fdef c/byte :args (s/cat :x number?) :ret int?)
+(s/fdef c/short :args (s/cat :x number?) :ret int?)
+(s/fdef c/int :args (s/cat :x number?) :ret int?)
+(s/fdef c/long :args (s/cat :x number?) :ret int?)
+(s/fdef c/bigint :args (s/cat :x number?) :ret integer?)
+(s/fdef c/biginteger :args (s/cat :x number?) :ret integer?)
+(s/fdef c/float :args (s/cat :x number?) :ret float?)
+(s/fdef c/double :args (s/cat :x number?) :ret double?)
+(s/fdef c/bigdec :args (s/cat :x number?) :ret bigdec?)
 
-(s/fdef inc :args (s/cat :x number?) :ret number?)
-(s/fdef dec :args (s/cat :x number?) :ret number?)
-(s/fdef quot :args (s/cat :num number? :div number?) :ret number?)
-(s/fdef mod :args (s/cat :num number? :div number?) :ret number?)
-(s/fdef rem :args (s/cat :num number? :div number?) :ret number?)
-(s/fdef max :args (s/+ number?) :ret number?)
-(s/fdef min :args (s/+ number?) :ret number?)
+(s/fdef c/inc :args (s/cat :x number?) :ret number?)
+(s/fdef c/dec :args (s/cat :x number?) :ret number?)
+(s/fdef c/quot :args (s/cat :num number? :div number?) :ret number?)
+(s/fdef c/mod :args (s/cat :num number? :div number?) :ret number?)
+(s/fdef c/rem :args (s/cat :num number? :div number?) :ret number?)
+(s/fdef c/max :args (s/+ number?) :ret number?)
+(s/fdef c/min :args (s/+ number?) :ret number?)
 
-(s/fdef +' :args (s/* number?) :ret number?)
-(s/fdef -' :args (s/+ number?) :ret number?)
-(s/fdef *' :args (s/* number?) :ret number?)
-(s/fdef inc' :args (s/cat :x number?) :ret number?)
-(s/fdef dec' :args (s/cat :x number?) :ret number?)
+(s/fdef c/+' :args (s/* number?) :ret number?)
+(s/fdef c/-' :args (s/+ number?) :ret number?)
+(s/fdef c/*' :args (s/* number?) :ret number?)
+(s/fdef c/inc' :args (s/cat :x number?) :ret number?)
+(s/fdef c/dec' :args (s/cat :x number?) :ret number?)
 
-(s/fdef unchecked-char :args (s/cat :x number?) :ret char?)
-(s/fdef unchecked-byte :args (s/cat :x number?) :ret int?)
-(s/fdef unchecked-short :args (s/cat :x number?) :ret int?)
-(s/fdef unchecked-int :args (s/cat :x number?) :ret int?)
-(s/fdef unchecked-long :args (s/cat :x number?) :ret int?)
-(s/fdef unchecked-float :args (s/cat :x number?) :ret float?)
-(s/fdef unchecked-double :args (s/cat :x number?) :ret double?)
-(s/fdef unchecked-add :args (s/cat :x number? :y number?) :ret number?)
-(s/fdef unchecked-subtract :args (s/cat :x number? :y number?) :ret number?)
-(s/fdef unchecked-multiply :args (s/cat :x number? :y number?) :ret number?)
-(s/fdef unchecked-negate :args (s/cat :x number?) :ret number?)
-(s/fdef unchecked-inc :args (s/cat :x number?) :ret number?)
-(s/fdef unchecked-dec :args (s/cat :x number?) :ret number?)
-(s/fdef unchecked-add-int :args (s/cat :x number? :y number?) :ret int?)
-(s/fdef unchecked-subtract-int :args (s/cat :x number? :y number?) :ret int?)
-(s/fdef unchecked-multiply-int :args (s/cat :x number? :y number?) :ret int?)
-(s/fdef unchecked-divide-int :args (s/cat :x number? :y number?) :ret int?)
-(s/fdef unchecked-remainder-int :args (s/cat :x number? :y number?) :ret int?)
-(s/fdef unchecked-negate-int :args (s/cat :x number?) :ret int?)
-(s/fdef unchecked-inc-int :args (s/cat :x number?) :ret int?)
-(s/fdef unchecked-dec-int :args (s/cat :x number?) :ret int?)
+(s/fdef c/unchecked-char :args (s/cat :x number?) :ret char?)
+(s/fdef c/unchecked-byte :args (s/cat :x number?) :ret int?)
+(s/fdef c/unchecked-short :args (s/cat :x number?) :ret int?)
+(s/fdef c/unchecked-int :args (s/cat :x number?) :ret int?)
+(s/fdef c/unchecked-long :args (s/cat :x number?) :ret int?)
+(s/fdef c/unchecked-float :args (s/cat :x number?) :ret float?)
+(s/fdef c/unchecked-double :args (s/cat :x number?) :ret double?)
+(s/fdef c/unchecked-add :args (s/cat :x number? :y number?) :ret number?)
+(s/fdef c/unchecked-subtract :args (s/cat :x number? :y number?) :ret number?)
+(s/fdef c/unchecked-multiply :args (s/cat :x number? :y number?) :ret number?)
+(s/fdef c/unchecked-negate :args (s/cat :x number?) :ret number?)
+(s/fdef c/unchecked-inc :args (s/cat :x number?) :ret number?)
+(s/fdef c/unchecked-dec :args (s/cat :x number?) :ret number?)
+(s/fdef c/unchecked-add-int :args (s/cat :x number? :y number?) :ret int?)
+(s/fdef c/unchecked-subtract-int :args (s/cat :x number? :y number?) :ret int?)
+(s/fdef c/unchecked-multiply-int :args (s/cat :x number? :y number?) :ret int?)
+(s/fdef c/unchecked-divide-int :args (s/cat :x number? :y number?) :ret int?)
+(s/fdef c/unchecked-remainder-int :args (s/cat :x number? :y number?) :ret int?)
+(s/fdef c/unchecked-negate-int :args (s/cat :x number?) :ret int?)
+(s/fdef c/unchecked-inc-int :args (s/cat :x number?) :ret int?)
+(s/fdef c/unchecked-dec-int :args (s/cat :x number?) :ret int?)
 
-(s/fdef bit-not :args (s/cat :x int?) :ret int?)
-(s/fdef bit-and :args (s/cat :x int? :y int? :more (s/* int?)) :ret int?)
-(s/fdef bit-or :args (s/cat :x int? :y int? :more (s/* int?)) :ret int?)
-(s/fdef bit-xor :args (s/cat :x int? :y int? :more (s/* int?) :ret int?))
-(s/fdef bit-and-not :args (s/cat :x int? :y int? :more (s/* int?)) :ret int?)
-(s/fdef bit-shift-left :args (s/cat :x int? :n int?) :ret int?)
-(s/fdef bit-shift-right :args (s/cat :x int? :n int?) :ret int?)
-(s/fdef unsigned-bit-shift-right :args (s/cat :x int? :n int?) :ret int?)
-(s/fdef bit-test :args (s/cat :x int? :n int?) :ret boolean?)
-(s/fdef bit-clear :args (s/cat :x int? :n int?) :ret int?)
-(s/fdef bit-set :args (s/cat :x int? :n int?) :ret int?)
-(s/fdef bit-flip :args (s/cat :x int? :n int?) :ret int?)
+(s/fdef c/bit-not :args (s/cat :x int?) :ret int?)
+(s/fdef c/bit-and :args (s/cat :x int? :y int? :more (s/* int?)) :ret int?)
+(s/fdef c/bit-or :args (s/cat :x int? :y int? :more (s/* int?)) :ret int?)
+(s/fdef c/bit-xor :args (s/cat :x int? :y int? :more (s/* int?) :ret int?))
+(s/fdef c/bit-and-not :args (s/cat :x int? :y int? :more (s/* int?)) :ret int?)
+(s/fdef c/bit-shift-left :args (s/cat :x int? :n int?) :ret int?)
+(s/fdef c/bit-shift-right :args (s/cat :x int? :n int?) :ret int?)
+(s/fdef c/unsigned-bit-shift-right :args (s/cat :x int? :n int?) :ret int?)
+(s/fdef c/bit-test :args (s/cat :x int? :n int?) :ret boolean?)
+(s/fdef c/bit-clear :args (s/cat :x int? :n int?) :ret int?)
+(s/fdef c/bit-set :args (s/cat :x int? :n int?) :ret int?)
+(s/fdef c/bit-flip :args (s/cat :x int? :n int?) :ret int?)
 
-(s/fdef rationalize :args (s/cat :num number?) :ret rational?)
-(s/fdef numerator :args (s/cat :r ratio?) :ret integer?)
-(s/fdef denominator :args (s/cat :r ratio?) :ret integer?)
-(s/fdef rand :args (s/? number?) :ret number?)
-(s/fdef rand-int :args (s/cat :n int?) :ret int?)
+(s/fdef c/rationalize :args (s/cat :num number?) :ret rational?)
+(s/fdef c/numerator :args (s/cat :r ratio?) :ret integer?)
+(s/fdef c/denominator :args (s/cat :r ratio?) :ret integer?)
+(s/fdef c/rand :args (s/? number?) :ret number?)
+(s/fdef c/rand-int :args (s/cat :n int?) :ret int?)
 
-(s/fdef empty? :args (s/cat :coll coll?) :ret boolean?)
-(s/fdef sequential? :args (s/cat :coll coll?) :ret boolean?)
-(s/fdef associative? :args (s/cat :coll coll?) :ret boolean?)
-(s/fdef indexed? :args (s/cat :coll coll?) :ret boolean?)
-(s/fdef counted? :args (s/cat :coll coll?) :ret boolean?)
-(s/fdef sorted? :args (s/cat :coll coll?) :ret boolean?)
-(s/fdef reversible? :args (s/cat :coll coll?) :ret boolean?)
+(s/fdef s/empty? :args (s/cat :coll coll?) :ret boolean?)
+(s/fdef c/sequential? :args (s/cat :coll coll?) :ret boolean?)
+(s/fdef c/associative? :args (s/cat :coll coll?) :ret boolean?)
+(s/fdef c/indexed? :args (s/cat :coll coll?) :ret boolean?)
+(s/fdef c/counted? :args (s/cat :coll coll?) :ret boolean?)
+(s/fdef c/sorted? :args (s/cat :coll coll?) :ret boolean?)
+(s/fdef c/reversible? :args (s/cat :coll coll?) :ret boolean?)
 
-(s/fdef chunked-seq? :args (s/cat :s seq?) :ret boolean?)
+(s/fdef c/chunked-seq? :args (s/cat :s seq?) :ret boolean?)
 
 (comment
 
