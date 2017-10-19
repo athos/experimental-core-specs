@@ -39,6 +39,7 @@
   c/coll?
   c/seq?
   c/seqable?
+  c/sequential?
   c/list?
   c/set?
   c/vector?
@@ -148,7 +149,6 @@
 (s/fdef c/rand-int :args (s/cat :n int?) :ret int?)
 
 (s/fdef s/empty? :args (s/cat :coll coll?) :ret boolean?)
-(s/fdef c/sequential? :args (s/cat :coll coll?) :ret boolean?)
 (s/fdef c/associative? :args (s/cat :coll coll?) :ret boolean?)
 (s/fdef c/indexed? :args (s/cat :coll coll?) :ret boolean?)
 (s/fdef c/counted? :args (s/cat :coll coll?) :ret boolean?)
