@@ -155,63 +155,195 @@
 (s/fdef c/sorted? :args (s/cat :coll coll?) :ret boolean?)
 (s/fdef c/reversible? :args (s/cat :coll coll?) :ret boolean?)
 
+(s/fdef c/seq :args (s/cat :coll seqable?) :ret (s/nilable seq?))
+(s/fdef c/cons :args (s/cat :x any? :seq seqable?) :ret seq?)
+(s/fdef c/first :args (s/cat :coll seqable?) :ret (s/nilable any?))
+(s/fdef c/next :args (s/cat :coll seqable?) :ret (s/nilable seq?))
+(s/fdef c/rest :args (s/cat :coll seqable?) :ret seq?)
+(s/fdef c/ffirst :args (s/cat :x seqable?) :ret (s/nilable any?))
+(s/fdef c/fnext :args (s/cat :x seqable?) :ret (s/nilable any?))
+(s/fdef c/nfirst :args (s/cat :x seqable?) :ret (s/nilable seq?))
+(s/fdef c/nnext :args (s/cat :x seqable?) :ret (s/nilable seq?))
+(s/fdef c/nth
+  :args (s/cat :coll (s/alt :seq seq? :indexed indexed?)
+               :index int?
+               :not-found (s/? any?))
+  :ret any?)
+(s/fdef c/nthnext :args (s/cat :coll seqable? :n int?) :ret (s/nilable seq?))
+(s/fdef c/nthrest :args (s/cat :coll seqable? :n int?) :ret seq?)
+(s/fdef c/take
+  :args (s/cat :n int? :coll (s/? seqable?))
+  :ret (s/or :seq seq? :xform fn?))
+(s/fdef c/drop
+  :args (s/cat :n int? :coll (s/? seqable?))
+  :ret (s/or :seq seq? :xform fn?))
+(s/fdef c/take-while
+  :args (s/cat :pred ifn? :coll (s/? seqable?))
+  :ret (s/or :seq seq? :xform fn?))
+(s/fdef c/drop-while
+  :args (s/cat :pred ifn? :coll (s/? seqable?))
+  :ret (s/or :seq seq? :xform fn?))
+(s/fdef c/last :args (s/cat :coll seqable?) :ret any?)
+(s/fdef c/butlast :args (s/cat :coll seqable?) :ret (s/nilable seq?))
+(s/fdef c/take-last :args (s/cat :n int? :coll seqable?) :ret (s/nilable seq?))
+(s/fdef c/drop-last :args (s/cat :n int? :coll seqable?) :ret seq?)
+(s/fdef c/take-nth
+  :args (s/cat :n int :coll (s/? seqable?))
+  :ret (s/or :seq seq? :xform fn?))
+(s/fdef c/count :args (s/cat :coll seqable?) :ret int?)
+(s/fdef c/concat :args (s/* seqable?) :ret seq?)
+(s/fdef c/seque
+  :args (s/cat :n-or-q (s/? (s/alt :n int?
+                                   :q #(instance? java.util.concurrent.BlockingQueue %)))
+               :s seqable?)
+  :ret seq?)
+(s/fdef c/sequence
+  :args (s/alt :1 (s/cat :coll seqable?)
+               :2+ (s/cat :xform fn? :colls (s/+ seqable?)))
+  :ret seq?)
+(s/fdef c/reduce
+  :args (s/alt :without-init (s/cat :f ifn? :coll seqable?)
+               :with-init (s/cat :f ifn? :val any? :coll seqable?))
+  :ret any?)
+(s/fdef c/map
+  :args (s/alt :xform (s/cat :f ifn?)
+               :seq (s/cat :f ifn? :colls (s/* seqable?)))
+  :ret seq?)
+(s/fdef c/filter
+  :args (s/cat :pred ifn? :coll (s/? seqable?))
+  :ret (s/or :seq seq? :xform fn?))
+(s/fdef c/remove
+  :args (s/cat :pred ifn? :coll (s/? seqable?))
+  :ret (s/or :seq seq? :xform fn?))
+(s/fdef c/keep
+  :args (s/cat :f ifn? :coll (s/? seqable?))
+  :ret (s/or :seq seq? :xform fn?))
+(s/fdef c/mapcat
+  :args (s/cat :f ifn? :colls (s/* seqable?))
+  :ret (s/or :seq seq? :xform fn?))
+(s/fdef c/map-indexed
+  :args (s/cat :f ifn? :coll (s/? seqable?))
+  :ret (s/or :seq seq? :xform fn?))
+(s/fdef c/keep-indexed
+  :args (s/cat :f ifn? :coll (s/? seqable?))
+  :ret (s/or :seq seq? :xform fn?))
+(s/fdef c/some :args (s/cat :pred ifn? :coll seqable?) :ret any?)
+(s/fdef c/every? :args (s/cat :pred ifn? :coll seqable?) :ret boolean?)
+(s/fdef c/not-any? :args (s/cat :pred ifn? :coll seqable?) :ret boolean?)
+(s/fdef c/not-every? :args (s/cat :pred ifn? :coll seqable?) :ret boolean?)
+(s/fdef c/doall :args (s/cat :n (s/? int?) :coll seqable?) :ret seq?)
+(s/fdef c/dorun :args (s/cat :n (s/? int?) :coll seqable?) :ret nil?)
+(s/fdef c/run! :args (s/cat :proc ifn? :coll seqable?) :ret nil?)
+(s/fdef c/reverse :args (s/cat :coll seqable?) :ret seq?)
+(s/fdef c/dedupe
+  :args (s/cat :coll (s/? seqable?))
+  :ret (s/or :seq seq? :xform fn?))
+(s/fdef c/distinct
+  :args (s/cat :coll (s/? seqable?))
+  :ret (s/or :seq seq? :xform fn?))
+(s/fdef c/range
+  :args (s/alt :0 (s/cat)
+               :1 (s/cat :end integer?)
+               :2 (s/cat :start integer? :end integer?)
+               :3 (s/cat :start integer? :end integer? :step integer?))
+  :ret seq?)
+(s/fdef c/cycle :args (s/cat :coll seqable?) :ret seq?)
+(s/fdef c/repeat :args (s/cat :n (s/? int?) :x any?) :ret seq?)
+(s/fdef c/replicate :args (s/cat :n (s/? int?) :x any?) :ret seq?)
+(s/fdef c/repeatedly :args (s/cat :n (s/? int?) :x ifn?) :ret seq?)
+(s/fdef c/iterate :args (s/cat :f ifn? :x any?) :ret seq?)
+(s/fdef c/interpose :args (s/cat :sep any? :coll seqable?) :ret seq?)
+(s/fdef c/interleave :args (s/* seqable?) :ret seq?)
+(s/fdef c/reductions
+  :args (s/cat :f ifn? :init (s/? any?) :coll seqable?)
+  :ret seq?)
+(s/fdef c/split-at :args (s/cat :n int? :coll seqable?) :ret vector?)
+(s/fdef c/split-with :args (s/cat :pred ifn? :coll seqable?) :ret vector?)
+(s/fdef c/frequencies :args (s/cat :coll seqable?) :ret map?)
+(s/fdef c/group-by :args (s/cat :f ifn? :coll seqable?) :ret map?)
+(s/fdef c/partition
+  :args (s/alt :2 (s/cat :n int? :coll seqable?)
+               :3 (s/cat :n int? :step int? :coll seqable?)
+               :4 (s/cat :n int? :step int? :pad seqable? :coll seqable?))
+  :ret seq?)
+(s/fdef c/partition-by
+  :args (s/cat :f ifn? :coll (s/? seqable?))
+  :ret (s/or :seq seq? :xform fn?))
+(s/fdef c/partition-all
+  :args (s/alt :1 (s/cat :n int?)
+               :2 (s/cat :n int? :coll seqable?)
+               :3 (s/cat :n int? :step int? :coll seqable?))
+  :ret (s/or :seq seq? :xform fn?))
+(s/fdef c/sort :args (s/cat :comp (s/? ifn?) :coll seqable?) :ret seq?)
+(s/fdef c/sort-by
+  :args (s/cat :keyfn ifn? :comp (s/? ifn?) :coll seqable?)
+  :ret seq?)
+(s/fdef c/tree-seq
+  :args (s/cat :branch? ifn? :children ifn? :root any?)
+  :ret seq?)
+(s/fdef c/re-seq
+  :args (s/cat :re #(instance? java.util.regex.Pattern %) :s string?)
+  :ret seq?)
+(s/fdef c/iterator-seq
+  :args (s/cat :iter #(instance? java.util.Iterator %))
+  :ret seq?)
+(s/fdef c/enumeration-seq
+  :args (s/cat :e #(instance? java.util.Enumeration %))
+  :ret seq?)
+(s/fdef c/line-seq
+  :args (s/cat :rdr #(instance? java.io.BufferedReader %))
+  :ret seq?)
+(s/fdef c/file-seq
+  :args (s/cat :dir #(instance? java.io.File %))
+  :ret seq?)
+(s/fdef c/resultset-seq
+  :args (s/cat :rs #(instance? java.sql.ResultSet %))
+  :ret seq?)
+
 (s/fdef c/chunked-seq? :args (s/cat :s seq?) :ret boolean?)
 
 (comment
 
+subseq
+rseq
+rsubseq
+find
+filterv
+chunk-first
 bound?
 restart-agent
-sort-by
 macroexpand
 ensure
-chunk-first
 eduction
-tree-seq
-seq
-reduce
 find-ns
 get-thread-bindings
 contains?
-every?
 proxy-mappings
-keep-indexed
 subs
 ref-min-history
 set
-take-last
 reader-conditional
 ->Eduction
-butlast
 satisfies?
-line-seq
-take-nth
-first
 re-groups
 ns-unmap
 println-str
 with-bindings*
 inst-ms
-iterator-seq
-iterate
 slurp
 newline
 short-array
-doall
 prefers
-enumeration-seq
-dedupe
 dissoc
 atom
 print-method
 peek
 aget
-last
 pr
 namespace
 push-thread-bindings
 bases
 remove-ns
-take
 thread-bound?
 send-via
 boolean
@@ -220,50 +352,36 @@ aclone
 vreset!
 chunk
 future-call
-resultset-seq
 struct
-map
 juxt
 ns-publics
 test
-rest
 ex-data
 compile
 isa?
 munge
 set-error-mode!
-re-seq
 make-hierarchy
 set-agent-send-executor!
 swap-vals!
-keep
 char
-mapcat
 aset-long
 some?
-reverse
-range
-sort
-map-indexed
 rand-nth
 comp
 await
 spit
 future-done?
-dorun
 disj
 eval
-cons
 refer
 print-dup
 floats
 fnil
 merge-with
-nthrest
 load
 shuffle
 boolean-array
-find
 alength
 deliver
 var-set
@@ -278,15 +396,12 @@ int-array
 cat
 StackTraceElement->vec
 flush
-take-while
 vary-meta
 alter
 conj!
-repeatedly
 zipmap
 reset-vals!
 alter-var-root
-remove
 re-pattern
 pop!
 chunk-append
@@ -299,20 +414,15 @@ compare-and-set!
 await1
 ref-set
 pop-thread-bindings
-interleave
 printf
 get
 identity
 into
-nfirst
 meta
 find-protocol-impl
 method-sig
 hash-ordered-coll
 reset-meta!
-cycle
-seque
-filterv
 hash
 ns-aliases
 read
@@ -336,7 +446,6 @@ inst-ms*
 force
 bound-fn*
 namespace-munge
-group-by
 prn
 extend
 ->VecSeq
@@ -349,11 +458,9 @@ ref
 extends?
 promise
 aset-char
-rseq
 construct-proxy
 agent-errors
 pr-str
-concat
 aset-short
 set-agent-send-off-executor!
 symbol
@@ -361,7 +468,6 @@ to-array-2d
 pop
 use
 dissoc!
-reductions
 aset-byte
 ref-history-count
 assoc!
@@ -370,7 +476,6 @@ reduce-kv
 cast
 reset!
 name
-ffirst
 sorted-set
 byte-array
 tagged-literal
@@ -382,16 +487,10 @@ memoize
 alter-meta!
 require
 persistent!
-nnext
 add-watch
-not-every?
 agent-error
-some
 future-cancelled?
 struct-map
-drop
-nth
-split-at
 load-reader
 random-sample
 select-keys
@@ -405,7 +504,6 @@ ensure-reduced
 instance?
 mix-collection-hash
 re-find
-run!
 val
 loaded-libs
 ->Vec
@@ -416,7 +514,6 @@ the-ns
 type
 ns-name
 max-key
-file-seq
 agent
 ns-map
 set-validator!
@@ -432,23 +529,17 @@ volatile!
 read-line
 clear-agent-errors
 vector
-drop-last
 not-empty
-distinct
-partition
 add-classpath
 long-array
 descendants
 merge
 accessor
 mapv
-partition-all
-partition-by
 object-array
 derive
 load-string
 ancestors
-subseq
 error-handler
 gensym
 intern
@@ -465,7 +556,6 @@ find-protocol-method
 subvec
 partial
 find-keyword
-replicate
 min-key
 reduced
 char-escape-string
@@ -482,20 +572,15 @@ methods
 ->ArrayChunk
 float-array
 alias
-frequencies
 read-string
-rsubseq
 get-method
-filter
 list
-split-with
 aset
 ->VecNode
 keyword
 destructure
 chars
 str
-next
 hash-map
 underive
 ref-max-history
@@ -506,11 +591,9 @@ some-fn
 to-array
 xml-seq
 parents
-count
 supers
 sorted-map-by
 apply
-interpose
 deref
 assoc
 transient
@@ -519,7 +602,6 @@ chunk-cons
 comparator
 sorted-map
 send
-drop-while
 proxy-call-with-super
 realized?
 char-array
@@ -527,7 +609,6 @@ resolve
 compare
 complement
 with-redefs-fn
-sequence
 constantly
 get-proxy-class
 make-array
@@ -535,14 +616,11 @@ shorts
 completing
 update-proxy
 hash-unordered-coll
-repeat
-nthnext
 create-struct
 get-validator
 await-for
 chunk-next
 print-str
-not-any?
 into-array
 init-proxy
 chunk-buffer
@@ -550,7 +628,6 @@ future-cancel
 var-get
 commute
 get-in
-fnext
 bytes
 
 when-first
