@@ -1,6 +1,7 @@
 (ns experimental-core-specs.core
   (:require [clojure.core :as c]
-            [clojure.spec.alpha :as s]))
+            [clojure.spec.alpha :as s])
+  (:import [clojure.lang IChunk ChunkBuffer]))
 
 (defmacro define-simple-predicate-specs [& preds]
   `(do ~@(for [pred preds]
@@ -301,6 +302,21 @@
   :ret seq?)
 
 (s/fdef c/chunked-seq? :args (s/cat :s seq?) :ret boolean?)
+(s/fdef c/chunk-buffer
+  :args (s/cat :capacity int?)
+  :ret #(instance? ChunkBuffer %))
+(s/fdef c/chunk-append
+  :args (s/cat :b #(instance? ChunkBuffer %) :x any?)
+  :ret #(instance? IChunk %))
+(s/fdef c/chunk
+  :args (s/cat :b #(instance? ChunkBuffer %))
+  :ret #(instance? IChunk %))
+(s/fdef c/chunk-cons
+  :args (s/cat :chunk #(instance? IChunk %) :rest seqable?)
+  :ret seq?)
+(s/fdef c/chunk-first :args (s/cat :s chunked-seq?) :ret any?)
+(s/fdef c/chunk-next :args (s/cat :s chunked-seq?) :ret (s/nilable seq?))
+(s/fdef c/chunk-rest :args (s/cat :s chunked-seq?) :ret seq?)
 
 (comment
 
@@ -309,7 +325,6 @@ rseq
 rsubseq
 find
 filterv
-chunk-first
 bound?
 restart-agent
 macroexpand
@@ -350,7 +365,6 @@ boolean
 find-var
 aclone
 vreset!
-chunk
 future-call
 struct
 juxt
@@ -404,7 +418,6 @@ reset-vals!
 alter-var-root
 re-pattern
 pop!
-chunk-append
 prn-str
 format
 shutdown-agents
@@ -429,7 +442,6 @@ read
 key
 longs
 aset-double
-chunk-rest
 pcalls
 remove-all-methods
 ns-resolve
@@ -598,7 +610,6 @@ deref
 assoc
 transient
 clojure-version
-chunk-cons
 comparator
 sorted-map
 send
@@ -619,11 +630,9 @@ hash-unordered-coll
 create-struct
 get-validator
 await-for
-chunk-next
 print-str
 into-array
 init-proxy
-chunk-buffer
 future-cancel
 var-get
 commute
