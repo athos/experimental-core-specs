@@ -149,6 +149,27 @@
 (s/fdef c/rand :args (s/? number?) :ret number?)
 (s/fdef c/rand-int :args (s/cat :n int?) :ret int?)
 
+(s/fdef c/symbol
+  :args (s/alt :1 (s/cat :name (s/alt :sym symbol? :str string?))
+               :2 (s/cat :ns string? :name string?))
+  :ret symbol?)
+(s/fdef c/keyword
+  :args (s/alt :1 (s/cat :name (s/alt :kw keyword?
+                                      :sym symbol?
+                                      :str string?))
+               :2 (s/cat :ns string? :name string?))
+  :ret keyword?)
+(s/fdef c/namespace
+  :args (s/cat :x (s/alt :sym symbol? :kw keyword?))
+  :ret (s/nilable string?))
+(s/fdef c/name
+  :args (s/cat :x (s/alt :str string? :kw keyword? :sym symbol?))
+  :ret string?)
+(s/fdef c/gensym
+  :args (s/alt :0 (s/cat)
+               :1 (s/cat :prefix-string (s/alt :str string? :sym symbol?)))
+  :ret symbol?)
+
 (s/fdef s/empty? :args (s/cat :coll coll?) :ret boolean?)
 (s/fdef c/associative? :args (s/cat :coll coll?) :ret boolean?)
 (s/fdef c/indexed? :args (s/cat :coll coll?) :ret boolean?)
@@ -355,7 +376,6 @@ print-method
 peek
 aget
 pr
-namespace
 push-thread-bindings
 bases
 remove-ns
@@ -475,7 +495,6 @@ agent-errors
 pr-str
 aset-short
 set-agent-send-off-executor!
-symbol
 to-array-2d
 pop
 use
@@ -487,7 +506,6 @@ hash-set
 reduce-kv
 cast
 reset!
-name
 sorted-set
 byte-array
 tagged-literal
@@ -553,7 +571,6 @@ derive
 load-string
 ancestors
 error-handler
-gensym
 intern
 print-simple
 flatten
@@ -589,7 +606,6 @@ get-method
 list
 aset
 ->VecNode
-keyword
 destructure
 chars
 str
