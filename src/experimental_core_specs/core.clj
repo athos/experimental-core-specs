@@ -339,6 +339,57 @@
 (s/fdef c/chunk-next :args (s/cat :s chunked-seq?) :ret (s/nilable seq?))
 (s/fdef c/chunk-rest :args (s/cat :s chunked-seq?) :ret seq?)
 
+(s/def ::namespace
+  (s/spec #(instance? clojure.lang.Namespace %)))
+(s/def ::ns-or-sym
+  (s/or :ns ::namespace :sym simple-symbol?))
+
+(s/fdef c/all-ns :args (s/cat) :ret (s/every ::namespace))
+(s/fdef c/find-ns :args (s/cat :sym symbol?) :ret (s/nilable ::namespace))
+(s/fdef c/the-ns :args (s/cat :x ::ns-or-sym) :ret ::namespace)
+(s/fdef c/ns-name :args (s/cat :ns ::ns-or-sym) :ret simple-symbol?)
+(s/fdef c/ns-map
+  :args (s/cat :ns ::ns-or-sym)
+  :ret (s/map-of simple-symbol? var?))
+(s/fdef c/ns-publics
+  :args (s/cat :ns ::ns-or-sym)
+  :ret (s/map-of simple-symbol? var?))
+(s/fdef c/ns-interns
+  :args (s/cat :ns ::ns-or-sym)
+  :ret (s/map-of simple-symbol? var?))
+(s/fdef c/ns-refers
+  :args (s/cat :ns ::ns-or-sym)
+  :ret (s/map-of simple-symbol? var?))
+(s/fdef c/ns-aliases
+  :args (s/cat :ns ::ns-or-sym)
+  :ret (s/map-of simple-symbol? ::namespace))
+(s/fdef c/ns-imports
+  :args (s/cat :ns ::ns-or-sym)
+  :ret (s/map-of simple-symbol? class?))
+(s/fdef c/in-ns :args (s/cat :name simple-symbol?))
+(s/fdef c/create-ns :args (s/cat :sym simple-symbol?) :ret ::namespace)
+(s/fdef c/ns-resolve
+  :args (s/cat :ns ::ns-or-sym
+               :env (s/? (s/map-of simple-symbol? any?))
+               :sym simple-symbol?)
+  :ret (s/or :var var? :class class?))
+(s/fdef c/resolve
+  :args (s/cat :env (s/? (s/map-of simple-symbol? any?))
+               :sym simple-symbol?)
+  :ret (s/or :var var? :class class?))
+(s/fdef c/intern
+  :args (s/cat :ns ::ns-or-sym :name simple-symbol? :val any?)
+  :ret var?)
+(s/fdef c/find-keyword
+  :args (s/alt :1 (s/cat :name (s/alt :kw keyword?
+                                      :sym symbol?
+                                      :str string?))
+               :2 (s/cat :ns string? :name string?))
+  :ret (s/nilable keyword?))
+(s/fdef c/ns-unmap :args (s/cat :ns ::ns-or-sym :sym simple-symbol?))
+(s/fdef c/ns-unalias :args (s/cat :ns ::ns-or-sym :sym simple-symbol?))
+(s/fdef c/remove-ns :args (s/cat :sym simple-symbol?))
+
 (comment
 
 subseq
@@ -351,7 +402,6 @@ restart-agent
 macroexpand
 ensure
 eduction
-find-ns
 get-thread-bindings
 contains?
 proxy-mappings
@@ -362,7 +412,6 @@ reader-conditional
 ->Eduction
 satisfies?
 re-groups
-ns-unmap
 println-str
 with-bindings*
 inst-ms
@@ -378,7 +427,6 @@ aget
 pr
 push-thread-bindings
 bases
-remove-ns
 thread-bound?
 send-via
 boolean
@@ -388,7 +436,6 @@ vreset!
 future-call
 struct
 juxt
-ns-publics
 test
 ex-data
 compile
@@ -425,7 +472,6 @@ disj!
 aset-float
 bean
 booleans
-ns-unalias
 int-array
 cat
 StackTraceElement->vec
@@ -457,18 +503,15 @@ method-sig
 hash-ordered-coll
 reset-meta!
 hash
-ns-aliases
 read
 key
 longs
 aset-double
 pcalls
 remove-all-methods
-ns-resolve
 aset-boolean
 trampoline
 vec
-ns-refers
 second
 vector-of
 hash-combine
@@ -483,8 +526,6 @@ extend
 ->VecSeq
 Inst
 double-array
-in-ns
-create-ns
 re-matcher
 ref
 extends?
@@ -540,12 +581,9 @@ loaded-libs
 not
 with-meta
 unreduced
-the-ns
 type
-ns-name
 max-key
 agent
-ns-map
 set-validator!
 swap!
 vals
@@ -571,7 +609,6 @@ derive
 load-string
 ancestors
 error-handler
-intern
 print-simple
 flatten
 doubles
@@ -579,18 +616,14 @@ halt-when
 remove-watch
 ex-info
 proxy-name
-ns-interns
-all-ns
 find-protocol-method
 subvec
 partial
-find-keyword
 min-key
 reduced
 char-escape-string
 re-matches
 array-map
-ns-imports
 send-off
 every-pred
 keys
@@ -632,7 +665,6 @@ send
 proxy-call-with-super
 realized?
 char-array
-resolve
 compare
 complement
 with-redefs-fn
