@@ -371,11 +371,11 @@
 (s/fdef c/ns-resolve
   :args (s/cat :ns ::ns-or-sym
                :env (s/? (s/map-of simple-symbol? any?))
-               :sym simple-symbol?)
+               :sym symbol?)
   :ret (s/or :var var? :class class?))
 (s/fdef c/resolve
   :args (s/cat :env (s/? (s/map-of simple-symbol? any?))
-               :sym simple-symbol?)
+               :sym symbol?)
   :ret (s/or :var var? :class class?))
 (s/fdef c/intern
   :args (s/cat :ns ::ns-or-sym :name simple-symbol? :val any?)
