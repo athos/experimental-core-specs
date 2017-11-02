@@ -33,7 +33,6 @@
   c/decimal?
   c/double?
   c/float?
-  c/bigdec?
   c/ratio?
   c/char?
   c/string?
@@ -92,7 +91,7 @@
 (s/fdef c/biginteger :args (s/cat :x number?) :ret integer?)
 (s/fdef c/float :args (s/cat :x number?) :ret float?)
 (s/fdef c/double :args (s/cat :x number?) :ret double?)
-(s/fdef c/bigdec :args (s/cat :x number?) :ret bigdec?)
+(s/fdef c/bigdec :args (s/cat :x number?) :ret decimal?)
 
 (s/fdef c/inc :args (s/cat :x number?) :ret number?)
 (s/fdef c/dec :args (s/cat :x number?) :ret number?)
